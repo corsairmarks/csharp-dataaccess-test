@@ -9,6 +9,7 @@
     using System.Data.Entity.SqlServer;
     using System.Data.SqlClient;
     using System.Reflection;
+    using DataAccessTest.Library.Value;
     using DataAccessTest.Repository;
     using DataAccessTest.Repository.EntityFramework;
     using DataAccessTest.Repository.EntityFramework.Sample;
@@ -53,6 +54,9 @@
                 .Is(c => c.GetInstance<DbConfiguration>)
                 .Ctor<Func<IEnumerable<DbContext>>>()
                 .Is(c => c.GetAllInstances<DbContext>);
+
+            // one line per entity
+            ConfigureGenericRepository<SampleDbContext, ValueModel>();
         }
 
         private class DbContextConvention : IRegistrationConvention
@@ -66,14 +70,14 @@
             }
         }
 
-        private static void ConfigureGenericRepository<TContext, TModel>(ConfigurationExpression ce)
+        private void ConfigureGenericRepository<TContext, TModel>()
             where TContext : DbContext
             where TModel : class
         {
-            ce.For<EntityFrameworkGenericRepository<TContext, TModel>>().LifecycleIs<ContainerLifecycle>();
-            ce.Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericReadRepository<TModel>>();
-            ce.Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericWriteRepository<TModel>>();
-            ce.Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericRepository<TModel>>();
+            For<EntityFrameworkGenericRepository<TContext, TModel>>().LifecycleIs<ContainerLifecycle>();
+            Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericReadRepository<TModel>>();
+            Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericWriteRepository<TModel>>();
+            Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericRepository<TModel>>();
         }
     }
 }

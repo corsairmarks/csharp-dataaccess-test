@@ -2,6 +2,7 @@
 {
     using System.Diagnostics;
     using System.Reflection;
+    using DataAccessTest.DatabaseMigrations.Migrations;
     using FluentMigrator;
     using FluentMigrator.Runner;
     using FluentMigrator.Runner.Announcers;
@@ -21,7 +22,7 @@
             // StructureMap does not properly find the Action<string> controller when
             // attempting injection, so I resorted to specifying a concrete object for the Singleton
             ForSingletonOf<IAnnouncer>().Use(new TextWriterAnnouncer(s => Debug.Write(s)));
-            var executingAssembly = Assembly.GetExecutingAssembly();
+            var executingAssembly = Assembly.GetAssembly(typeof(InitialCreate));
             ForSingletonOf<IRunnerContext>()
                 .Use<RunnerContext>()
                 .Setter<string>(rc => rc.Namespace)
@@ -32,7 +33,11 @@
                     c.GetInstance<IAnnouncer>(),
                     c.GetInstance<IMigrationProcessorOptions>()));
 
-            ForSingletonOf<IMigrationRunner>().Use<MigrationRunner>()
+            ForConcreteType<MigrationRunner>().Configure
+                .SelectConstructor(() => new MigrationRunner(null as Assembly, null, null));
+
+            ForSingletonOf<IMigrationRunner>()
+                .Use<MigrationRunner>()
                 .Ctor<Assembly>()
                 .Is(executingAssembly);
         }

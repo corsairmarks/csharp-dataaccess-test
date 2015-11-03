@@ -3,6 +3,7 @@
     using System.Data.Common;
     using System.Data.Entity;
     using System.Reflection;
+    using DataAccessTest.Library.Value;
 
     /// <summary>
     /// A sample <see cref="DbContext"/> for this proof-of-concept application.
@@ -21,6 +22,8 @@
         }
 
         #endregion
+
+        public IDbSet<ValueModel> Values { get; set; }
 
         #region Overridden Members
 
