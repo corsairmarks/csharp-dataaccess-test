@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="Controllers\UnitOfWorkApiController.cs" />
     <Compile Include="DependencyResolution\Registry\DatabaseMigrationRegistry.cs" />
     <Compile Include="DependencyResolution\Registry\EntityFrameworkRegistry.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
