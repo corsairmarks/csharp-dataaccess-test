@@ -8,25 +8,44 @@
     using DataAccessTest.Library.Value;
     using DataAccessTest.Repository;
 
-    public class ValuesController : ApiController
+    /// <summary>
+    /// A sample value editing controller.
+    /// </summary>
+    public class ValuesController : UnitOfWorkApiController
     {
+        /// <summary>
+        /// The values repository.
+        /// </summary>
         private readonly IGenericRepository<ValueModel> valuesRepository;
 
-        public ValuesController(IGenericRepository<ValueModel> valuesRepository)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValuesController"/> class.
+        /// </summary>
+        /// <param name="unitOfWork">The request-level unit of work.</param>
+        /// <param name="valuesRepository">The values repository.</param>
+        public ValuesController(IUnitOfWork unitOfWork, IGenericRepository<ValueModel> valuesRepository)
+            : base(unitOfWork)
         {
             this.valuesRepository = valuesRepository;
         }
 
-        // GET api/values
+        /// <summary>
+        /// Get all of the existing values.
+        /// </summary>
+        /// <returns>The collection of values.</returns>
         public IEnumerable<ValueModel> Get()
         {
             return this.valuesRepository.GetAll();
         }
 
-        // GET api/values/5
+        /// <summary>
+        /// Retrieve an existing value by <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The response message.</returns>
         public HttpResponseMessage Get(int id)
         {
-            var valueModel = valuesRepository.FindBy(vm => vm.Id == id).SingleOrDefault();
+            var valueModel = this.valuesRepository.FindBy(vm => vm.Id == id).SingleOrDefault();
             if (valueModel != null)
             {
                 return this.Request.CreateResponse(valueModel);
@@ -35,38 +54,53 @@
             return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // POST api/values
+        /// <summary>
+        /// Create a new value.
+        /// </summary>
+        /// <param name="value">The updated information.</param>
+        /// <returns>The response message.</returns>
         public HttpResponseMessage Post([FromBody]ValueModel value)
         {
-            var valueModel = valuesRepository.FindBy(vm => vm.Id == value.Id).SingleOrDefault();
+            var valueModel = this.valuesRepository.FindBy(vm => vm.Id == value.Id).SingleOrDefault();
             if (valueModel == null)
             {
                 this.valuesRepository.Create(value);
+                this.UnitOfWork.Complete();
                 return this.Request.CreateResponse(HttpStatusCode.Created);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.Conflict);
         }
 
-        // PUT api/values/5
+        /// <summary>
+        /// Update a value based on the request body.
+        /// </summary>
+        /// <param name="value">The updated information.</param>
+        /// <returns>The response message.</returns>
         public HttpResponseMessage Put([FromBody]ValueModel value)
         {
-            var valueModel = valuesRepository.FindBy(vm => vm.Id == value.Id).SingleOrDefault();
+            var valueModel = this.valuesRepository.FindBy(vm => vm.Id == value.Id).SingleOrDefault();
             if (valueModel != null)
             {
+                this.UnitOfWork.Complete();
                 return this.Request.CreateResponse(valueModel);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // DELETE api/values/5
+        /// <summary>
+        /// Delete a value by <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">The identifier of the value to delete.</param>
+        /// <returns>The response message.</returns>
         public HttpResponseMessage Delete(int id)
         {
-            var valueModel = valuesRepository.FindBy(vm => vm.Id == id).SingleOrDefault();
+            var valueModel = this.valuesRepository.FindBy(vm => vm.Id == id).SingleOrDefault();
             if (valueModel != null)
             {
                 this.valuesRepository.Delete(valueModel);
+                this.UnitOfWork.Complete();
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK);
