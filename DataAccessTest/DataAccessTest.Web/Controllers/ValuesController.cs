@@ -1,39 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-namespace DataAccessTest.Web.Controllers
+﻿namespace DataAccessTest.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+    using DataAccessTest.Library.Value;
+    using DataAccessTest.Repository;
+
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
+        private readonly IGenericRepository<ValueModel> valuesRepository;
+
+        public ValuesController(IGenericRepository<ValueModel> valuesRepository)
         {
-            return new string[] { "value1", "value2" };
+            this.valuesRepository = valuesRepository;
+        }
+
+        // GET api/values
+        public IEnumerable<ValueModel> Get()
+        {
+            return this.valuesRepository.GetAll();
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            return "value";
+            var valueModel = valuesRepository.FindBy(vm => vm.Id == id).SingleOrDefault();
+            if (valueModel != null)
+            {
+                return this.Request.CreateResponse(valueModel);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Post([FromBody]ValueModel value)
         {
+            var valueModel = valuesRepository.FindBy(vm => vm.Id == value.Id).SingleOrDefault();
+            if (valueModel == null)
+            {
+                this.valuesRepository.Create(value);
+                return this.Request.CreateResponse(HttpStatusCode.Created);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.Conflict);
         }
 
         // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        public HttpResponseMessage Put([FromBody]ValueModel value)
         {
+            var valueModel = valuesRepository.FindBy(vm => vm.Id == value.Id).SingleOrDefault();
+            if (valueModel != null)
+            {
+                return this.Request.CreateResponse(valueModel);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         // DELETE api/values/5
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
+            var valueModel = valuesRepository.FindBy(vm => vm.Id == id).SingleOrDefault();
+            if (valueModel != null)
+            {
+                this.valuesRepository.Delete(valueModel);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

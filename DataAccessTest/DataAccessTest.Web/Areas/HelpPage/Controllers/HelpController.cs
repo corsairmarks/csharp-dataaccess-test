@@ -13,11 +13,6 @@ namespace DataAccessTest.Web.Areas.HelpPage.Controllers
     {
         private const string ErrorViewName = "Error";
 
-        public HelpController()
-            : this(GlobalConfiguration.Configuration)
-        {
-        }
-
         public HelpController(HttpConfiguration config)
         {
             Configuration = config;

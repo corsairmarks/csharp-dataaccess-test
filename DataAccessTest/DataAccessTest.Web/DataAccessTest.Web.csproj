@@ -41,9 +41,41 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentMigrator, Version=1.6.0.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentMigrator.1.6.0\lib\40\FluentMigrator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentMigrator.Runner, Version=1.6.0.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentMigrator.Runner.1.6.0\lib\40\FluentMigrator.Runner.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.Net4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.web.3.1.6.186\lib\net40\StructureMap.Web.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -108,7 +140,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="DependencyResolution\Registry\DatabaseMigrationRegistry.cs" />
+    <Compile Include="DependencyResolution\Registry\EntityFrameworkRegistry.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\StructureMapConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -139,6 +174,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
+    <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
+    <Compile Include="DependencyResolution\StructureMapHttpControllerActivator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -178,7 +216,24 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessTest.DatabaseMigrations\DataAccessTest.DatabaseMigrations.csproj">
+      <Project>{4697fe0d-4cd2-484b-b008-c376c17bf822}</Project>
+      <Name>DataAccessTest.DatabaseMigrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessTest.Library\DataAccessTest.Library.csproj">
+      <Project>{d662e4e7-6849-4a55-b559-2a264fc0fb93}</Project>
+      <Name>DataAccessTest.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessTest.Repository.EntityFramework\DataAccessTest.Repository.EntityFramework.csproj">
+      <Project>{2e43ef7c-86d4-4899-93f3-0e978b2c760f}</Project>
+      <Name>DataAccessTest.Repository.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessTest.Repository\DataAccessTest.Repository.csproj">
+      <Project>{da77d930-c4ec-4236-a005-b799a215b83f}</Project>
+      <Name>DataAccessTest.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
