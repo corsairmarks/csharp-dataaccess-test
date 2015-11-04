@@ -230,13 +230,13 @@
       <Project>{d662e4e7-6849-4a55-b559-2a264fc0fb93}</Project>
       <Name>DataAccessTest.Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataAccessTest.Repository.PetaPoco\DataAccessTest.Repository.PetaPoco.csproj">
-      <Project>{27420230-99fd-4140-857b-494e97c9b527}</Project>
-      <Name>DataAccessTest.Repository.PetaPoco</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataAccessTest.Repository.EntityFramework\DataAccessTest.Repository.EntityFramework.csproj">
       <Project>{2e43ef7c-86d4-4899-93f3-0e978b2c760f}</Project>
       <Name>DataAccessTest.Repository.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessTest.Repository.PetaPoco\DataAccessTest.Repository.PetaPoco.csproj">
+      <Project>{27420230-99fd-4140-857b-494e97c9b527}</Project>
+      <Name>DataAccessTest.Repository.PetaPoco</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataAccessTest.Repository\DataAccessTest.Repository.csproj">
       <Project>{da77d930-c4ec-4236-a005-b799a215b83f}</Project>
