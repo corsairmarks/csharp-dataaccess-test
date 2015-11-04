@@ -23,6 +23,9 @@
 
         #endregion
 
+        /// <summary>
+        /// Gets or sets the set of values.
+        /// </summary>
         public IDbSet<ValueModel> Values { get; set; }
 
         #region Overridden Members

@@ -8,34 +8,38 @@
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.SqlServer;
     using System.Data.SqlClient;
-    using System.Reflection;
     using DataAccessTest.Library.Value;
     using DataAccessTest.Repository;
     using DataAccessTest.Repository.EntityFramework;
     using DataAccessTest.Repository.EntityFramework.Sample;
-    using StructureMap;
     using StructureMap.Configuration.DSL;
     using StructureMap.Graph;
     using StructureMap.Pipeline;
 
+    /// <summary>
+    /// Configures dependency resolution for Entity Framework.
+    /// </summary>
     public class EntityFrameworkRegistry : Registry
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkRegistry"/> class.
+        /// </summary>
         public EntityFrameworkRegistry()
         {
-            ForSingletonOf<IDbConnectionFactory>().Use<SqlConnectionFactory>().Ctor<string>().Named("DefaultConnectionString");
-            For<DbConnection>()
+            this.ForSingletonOf<IDbConnectionFactory>().Use<SqlConnectionFactory>().Ctor<string>().Named("DefaultConnectionString");
+            this.For<DbConnection>()
                 .LifecycleIs<ContainerLifecycle>()
                 .Use(c => c.GetInstance<IDbConnectionFactory>().CreateConnection(c.GetInstance<string>("DefaultConnectionString")));
-            ForSingletonOf<string>().Use<string>("System.Data.SqlClient").Named("DbProviderInvariantName");
-            ForSingletonOf<DbProviderFactory>().Use(SqlClientFactory.Instance);
-            ForSingletonOf<DbProviderServices>().Use(SqlProviderServices.Instance);
+            this.ForSingletonOf<string>().Use<string>("System.Data.SqlClient").Named("DbProviderInvariantName");
+            this.ForSingletonOf<DbProviderFactory>().Use(SqlClientFactory.Instance);
+            this.ForSingletonOf<DbProviderServices>().Use(SqlProviderServices.Instance);
 
-            ForSingletonOf<DbConfiguration>()
+            this.ForSingletonOf<DbConfiguration>()
                 .Use<EntityFrameworkConfig<SampleDbContext>>()
                 .Ctor<string>()
                 .Named("DbProviderInvariantName");
 
-            Scan(s =>
+            this.Scan(s =>
             {
                 s.AssemblyContainingType<EntityFrameworkDbInitializer>();
                 s
@@ -56,11 +60,34 @@
                 .Is(c => c.GetAllInstances<DbContext>);
 
             // one line per entity
-            ConfigureGenericRepository<SampleDbContext, ValueModel>();
+            this.ConfigureGenericRepository<SampleDbContext, ValueModel>();
         }
 
+        /// <summary>
+        /// Configure a generic Entity Framework repository for type <typeparamref name="TModel"/> in the the <typeparamref name="TContext"/>.
+        /// </summary>
+        /// <typeparam name="TContext">The type of the Entity Framework context containing the data set.</typeparam>
+        /// <typeparam name="TModel">The type of the repository model.</typeparam>
+        private void ConfigureGenericRepository<TContext, TModel>()
+            where TContext : DbContext
+            where TModel : class
+        {
+            this.For<EntityFrameworkGenericRepository<TContext, TModel>>().LifecycleIs<ContainerLifecycle>();
+            this.Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericReadRepository<TModel>>();
+            this.Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericWriteRepository<TModel>>();
+            this.Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericRepository<TModel>>();
+        }
+
+        /// <summary>
+        /// Register all instances of <see cref="DbContext"/> with the <see cref="ContainerLifecycle"/>.
+        /// </summary>
         private class DbContextConvention : IRegistrationConvention
         {
+            /// <summary>
+            /// Processes each item in an assembly scan.
+            /// </summary>
+            /// <param name="type">The type currently being read by the scanner.</param>
+            /// <param name="registry">The registry to modify.</param>
             public void Process(Type type, Registry registry)
             {
                 if (!type.IsAbstract && !type.IsInterface && type.IsSubclassOf(typeof(DbContext)))
@@ -68,16 +95,6 @@
                     registry.For(type).LifecycleIs(Lifecycles.Container).Use(type);
                 }
             }
-        }
-
-        private void ConfigureGenericRepository<TContext, TModel>()
-            where TContext : DbContext
-            where TModel : class
-        {
-            For<EntityFrameworkGenericRepository<TContext, TModel>>().LifecycleIs<ContainerLifecycle>();
-            Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericReadRepository<TModel>>();
-            Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericWriteRepository<TModel>>();
-            Forward<EntityFrameworkGenericRepository<TContext, TModel>, IGenericRepository<TModel>>();
         }
     }
 }

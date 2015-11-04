@@ -11,8 +11,14 @@
     using FluentMigrator.Runner.Processors.SqlServer;
     using StructureMap.Configuration.DSL;
 
+    /// <summary>
+    /// Configures dependency resolution for database migrations.
+    /// </summary>
     public class DatabaseMigrationRegistry : Registry
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseMigrationRegistry"/> class.
+        /// </summary>
         public DatabaseMigrationRegistry()
         {
             ForSingletonOf<IMigrationProcessorOptions>().Use<ProcessorOptions>()
@@ -29,9 +35,10 @@
                 .Is(executingAssembly.FullName);
             ForSingletonOf<IMigrationProcessorFactory>().Use<SqlServer2014ProcessorFactory>();
             ForSingletonOf<IMigrationProcessor>()
-                .Use(c => c.GetInstance<IMigrationProcessorFactory>().Create(c.GetInstance<string>("DefaultConnectionString"),
-                    c.GetInstance<IAnnouncer>(),
-                    c.GetInstance<IMigrationProcessorOptions>()));
+                .Use(c => c.GetInstance<IMigrationProcessorFactory>().Create(
+                        c.GetInstance<string>("DefaultConnectionString"),
+                            c.GetInstance<IAnnouncer>(),
+                            c.GetInstance<IMigrationProcessorOptions>()));
 
             ForConcreteType<MigrationRunner>().Configure
                 .SelectConstructor(() => new MigrationRunner(null as Assembly, null, null));

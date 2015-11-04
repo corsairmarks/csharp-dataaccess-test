@@ -23,8 +23,7 @@
         protected IUnitOfWork UnitOfWork { get; private set; }
 
         /// <summary>
-        /// Releases the unmanaged resources that are used by the object and, optionally,
-        /// releases the managed resources.
+        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)

@@ -12,7 +12,7 @@
     /// </summary>
     public class StructureMapDependencyScope : ServiceLocatorImplBase, IDependencyScope
     {
-        #region Variables
+        #region Fields
 
         /// <summary>
         /// The container.

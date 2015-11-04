@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessTest.Library.Value;
-
-namespace DataAccessTest.Repository.EntityFramework.Mapping
+﻿namespace DataAccessTest.Repository.EntityFramework.Mapping
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
+    using DataAccessTest.Library.Value;
+
+    /// <summary>
+    /// Entity Framework field mapping for the <see cref="ValueModelMapping"/> class.
+    /// </summary>
     internal class ValueModelMapping : EntityTypeConfiguration<ValueModel>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValueModelMapping"/> class.
+        /// </summary>
         public ValueModelMapping()
         {
-            ToTable("Value", "dbo");
-            HasKey(r => r.Id)
+            this.ToTable("Value", "dbo");
+            this.HasKey(r => r.Id)
                 .Property(r => r.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(r => r.Description)
+            this.Property(r => r.Description)
                 .HasColumnName("Desc")
                 .IsRequired()
                 .HasMaxLength(256);

@@ -18,7 +18,7 @@
     /// </remarks>
     public class StructureMapHttpControllerActivator : IHttpControllerActivator
     {
-        #region Variables
+        #region Fields
 
         /// <summary>
         /// The inversion-of-control container.

@@ -9,7 +9,7 @@
     /// </summary>
     public class EntityFrameworkDbInitializer : IDataAccessInitializer
     {
-        #region Variables
+        #region Fields
 
         /// <summary>
         /// A function to get the Entity Framework <see cref="DbConfiguration"/>.
