@@ -1,11 +1,12 @@
 ﻿namespace DataAccessTest.Web
 {
-    using System.Configuration;
+    using System;
     using System.Web;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
     using DataAccessTest.Web.DependencyResolution;
     using DataAccessTest.Web.DependencyResolution.Registry;
+    using DataAccessTest.Web.Utility;
     using Microsoft.Practices.ServiceLocation;
     using StructureMap;
     using StructureMap.Web.Pipeline;
@@ -18,28 +19,25 @@
         /// <summary>
         /// Create an application container.
         /// </summary>
+        /// <param name="dataAccessType">The data access layer to use.</param>
         /// <returns>The application-level <see cref="IContainer"/>.</returns>
-        public static IContainer Initialize()
+        public static IContainer Initialize(DataAccessType dataAccessType)
         {
             return new Container(ce =>
             {
-                ConfigureDatabaseConnections(ce);
                 ce.AddRegistry<DatabaseMigrationRegistry>();
 
-                // TODO: switch between data access registries based on config
-                ce.AddRegistry<EntityFrameworkRegistry>();
+                switch (dataAccessType)
+                {
+                    case DataAccessType.EntityFramework:
+                        ce.AddRegistry<EntityFrameworkRegistry>();
+                        break;
+                    default:
+                        throw new ArgumentException(string.Format("dataAccessType \"{0}\" is not available for use", dataAccessType), "dataAccessType");
+                }
+
                 ConfigureControllers(ce);
             });
-        }
-
-        /// <summary>
-        /// Configures the database connection.
-        /// </summary>
-        /// <param name="ce">The configuration currently executing.</param>
-        private static void ConfigureDatabaseConnections(ConfigurationExpression ce)
-        {
-            ce.ForSingletonOf<string>().Use<string>("DefaultConnection").Named("DefaultConnectionStringName");
-            ce.ForSingletonOf<string>().Use(c => ConfigurationManager.ConnectionStrings[c.GetInstance<string>("DefaultConnectionStringName")].ConnectionString).Named("DefaultConnectionString");
         }
 
         /// <summary>
