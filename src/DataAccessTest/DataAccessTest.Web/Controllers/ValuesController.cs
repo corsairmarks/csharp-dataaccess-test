@@ -82,6 +82,8 @@
             var valueModel = this.valuesRepository.FindBy(vm => vm.Id == value.Id).SingleOrDefault();
             if (valueModel != null)
             {
+                valueModel.Description = value.Description;
+                this.valuesRepository.Update(valueModel);
                 this.UnitOfWork.Complete();
                 return this.Request.CreateResponse(valueModel);
             }
@@ -101,9 +103,10 @@
             {
                 this.valuesRepository.Delete(valueModel);
                 this.UnitOfWork.Complete();
+                return this.Request.CreateResponse(HttpStatusCode.OK);
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK);
+            return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }
 }
