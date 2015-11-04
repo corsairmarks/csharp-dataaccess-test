@@ -2,12 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Common;
     using System.Data.Entity;
     using System.Data.Entity.Core.Common;
-    using System.Data.Entity.Infrastructure;
     using System.Data.Entity.SqlServer;
-    using System.Data.SqlClient;
     using DataAccessTest.Library.Value;
     using DataAccessTest.Repository;
     using DataAccessTest.Repository.EntityFramework;
@@ -26,14 +23,8 @@
         /// </summary>
         public EntityFrameworkRegistry()
         {
-            this.ForSingletonOf<IDbConnectionFactory>().Use<SqlConnectionFactory>().Ctor<string>().Named("DefaultConnectionString");
-            this.For<DbConnection>()
-                .LifecycleIs<ContainerLifecycle>()
-                .Use(c => c.GetInstance<IDbConnectionFactory>().CreateConnection(c.GetInstance<string>("DefaultConnectionString")));
-            this.ForSingletonOf<string>().Use<string>("System.Data.SqlClient").Named("DbProviderInvariantName");
-            this.ForSingletonOf<DbProviderFactory>().Use(SqlClientFactory.Instance);
+            this.IncludeRegistry<SqlDatabaseRegistry>();
             this.ForSingletonOf<DbProviderServices>().Use(SqlProviderServices.Instance);
-
             this.ForSingletonOf<DbConfiguration>()
                 .Use<EntityFrameworkConfig<SampleDbContext>>()
                 .Ctor<string>()
@@ -47,8 +38,6 @@
                     .OnAddedPluginTypes(gfe => gfe.LifecycleIs(Lifecycles.Container));
                 s.Convention<DbContextConvention>();
             });
-
-            ForSingletonOf<IEnumerable<IDatabaseInitializer<DbContext>>>().Use("blah", c => c.GetAllInstances<IDatabaseInitializer<DbContext>>());
 
             For<IUnitOfWork>().LifecycleIs<ContainerLifecycle>().Use<EntityFrameworkUnitOfWork<SampleDbContext>>();
 

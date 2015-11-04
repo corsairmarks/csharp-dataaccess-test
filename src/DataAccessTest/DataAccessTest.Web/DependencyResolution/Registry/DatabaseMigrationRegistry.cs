@@ -21,26 +21,27 @@
         /// </summary>
         public DatabaseMigrationRegistry()
         {
-            ForSingletonOf<IMigrationProcessorOptions>().Use<ProcessorOptions>()
+            this.IncludeRegistry<SqlDatabaseRegistry>();
+            this.ForSingletonOf<IMigrationProcessorOptions>().Use<ProcessorOptions>()
                 .Setter<bool>(po => po.PreviewOnly).Is(false)
                 .Setter<int>(po => po.Timeout).Is(60);
 
             // StructureMap does not properly find the Action<string> controller when
             // attempting injection, so I resorted to specifying a concrete object for the Singleton
-            ForSingletonOf<IAnnouncer>().Use(new TextWriterAnnouncer(s => Debug.Write(s)));
+            this.ForSingletonOf<IAnnouncer>().Use(new TextWriterAnnouncer(s => Debug.Write(s)));
             var migrationsAssembly = Assembly.GetAssembly(typeof(InitialCreate));
-            ForSingletonOf<IRunnerContext>()
+            this.ForSingletonOf<IRunnerContext>()
                 .Use<RunnerContext>()
                 .Setter<string>(rc => rc.Namespace)
                 .Is(typeof(InitialCreate).Namespace);
-            ForSingletonOf<IMigrationProcessorFactory>().Use<SqlServer2014ProcessorFactory>();
-            ForSingletonOf<IMigrationProcessor>()
+            this.ForSingletonOf<IMigrationProcessorFactory>().Use<SqlServer2014ProcessorFactory>();
+            this.ForSingletonOf<IMigrationProcessor>()
                 .Use(c => c.GetInstance<IMigrationProcessorFactory>().Create(
                         c.GetInstance<string>("DefaultConnectionString"),
                             c.GetInstance<IAnnouncer>(),
                             c.GetInstance<IMigrationProcessorOptions>()));
 
-            ForSingletonOf<IMigrationRunner>()
+            this.ForSingletonOf<IMigrationRunner>()
                 .Use<MigrationRunner>()
                 .SelectConstructor(() => new MigrationRunner(null as Assembly, null, null))
                 .Ctor<Assembly>()

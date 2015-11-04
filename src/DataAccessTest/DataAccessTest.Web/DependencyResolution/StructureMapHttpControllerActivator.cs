@@ -14,7 +14,7 @@
     /// </summary>
     /// <remarks>
     /// Code taken from: <c>http://marisks.net/2013/01/22/better-way-to-configure-structuremap-in-aspnet-webapi/</c>
-    /// Reasons for use over <see cref="IDependencyResolver"/>: <c>http://blog.ploeh.dk/2012/09/27/DependencyInjectionandLifetimeManagementwithASP.NETWebAPI/</c>
+    /// Reasons for use over <see cref=" System.Web.Http.Dependencies.IDependencyResolver"/>: <c>http://blog.ploeh.dk/2012/09/27/DependencyInjectionandLifetimeManagementwithASP.NETWebAPI/</c>
     /// </remarks>
     public class StructureMapHttpControllerActivator : IHttpControllerActivator
     {
