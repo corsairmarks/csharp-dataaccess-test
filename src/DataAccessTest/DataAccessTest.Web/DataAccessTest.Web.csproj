@@ -176,6 +176,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DependencyResolution\Registry\PetaPocoRegistry.cs" />
     <Compile Include="DependencyResolution\Registry\SqlDatabaseRegistry.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
@@ -228,6 +229,10 @@
     <ProjectReference Include="..\DataAccessTest.Library\DataAccessTest.Library.csproj">
       <Project>{d662e4e7-6849-4a55-b559-2a264fc0fb93}</Project>
       <Name>DataAccessTest.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessTest.Repository.PetaPoco\DataAccessTest.Repository.PetaPoco.csproj">
+      <Project>{27420230-99fd-4140-857b-494e97c9b527}</Project>
+      <Name>DataAccessTest.Repository.PetaPoco</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataAccessTest.Repository.EntityFramework\DataAccessTest.Repository.EntityFramework.csproj">
       <Project>{2e43ef7c-86d4-4899-93f3-0e978b2c760f}</Project>

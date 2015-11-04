@@ -11,5 +11,11 @@
         /// Entity Framework ORM, from Microsoft
         /// </summary>
         EntityFramework = 1,
+
+        /// <summary>
+        /// PetaPoco micro-ORM from Topten Software
+        /// </summary>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Proper names.")]
+        PetaPoco,
     }
 }
