@@ -1,11 +1,9 @@
 ﻿namespace DataAccessTest.Web.DependencyResolution.Registry
 {
     using System.Diagnostics;
-    using System.Linq;
     using System.Reflection;
     using DataAccessTest.DatabaseMigrations.Migrations;
     using FluentMigrator;
-    using FluentMigrator.Infrastructure;
     using FluentMigrator.Runner;
     using FluentMigrator.Runner.Announcers;
     using FluentMigrator.Runner.Initialization;
