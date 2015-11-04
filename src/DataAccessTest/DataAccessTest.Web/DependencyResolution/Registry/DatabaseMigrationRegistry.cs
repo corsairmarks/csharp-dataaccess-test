@@ -1,9 +1,11 @@
 ﻿namespace DataAccessTest.Web.DependencyResolution.Registry
 {
     using System.Diagnostics;
+    using System.Linq;
     using System.Reflection;
     using DataAccessTest.DatabaseMigrations.Migrations;
     using FluentMigrator;
+    using FluentMigrator.Infrastructure;
     using FluentMigrator.Runner;
     using FluentMigrator.Runner.Announcers;
     using FluentMigrator.Runner.Initialization;
@@ -28,11 +30,11 @@
             // StructureMap does not properly find the Action<string> controller when
             // attempting injection, so I resorted to specifying a concrete object for the Singleton
             ForSingletonOf<IAnnouncer>().Use(new TextWriterAnnouncer(s => Debug.Write(s)));
-            var executingAssembly = Assembly.GetAssembly(typeof(InitialCreate));
+            var migrationsAssembly = Assembly.GetAssembly(typeof(InitialCreate));
             ForSingletonOf<IRunnerContext>()
                 .Use<RunnerContext>()
                 .Setter<string>(rc => rc.Namespace)
-                .Is(executingAssembly.FullName);
+                .Is(typeof(InitialCreate).Namespace);
             ForSingletonOf<IMigrationProcessorFactory>().Use<SqlServer2014ProcessorFactory>();
             ForSingletonOf<IMigrationProcessor>()
                 .Use(c => c.GetInstance<IMigrationProcessorFactory>().Create(
@@ -40,13 +42,11 @@
                             c.GetInstance<IAnnouncer>(),
                             c.GetInstance<IMigrationProcessorOptions>()));
 
-            ForConcreteType<MigrationRunner>().Configure
-                .SelectConstructor(() => new MigrationRunner(null as Assembly, null, null));
-
             ForSingletonOf<IMigrationRunner>()
                 .Use<MigrationRunner>()
+                .SelectConstructor(() => new MigrationRunner(null as Assembly, null, null))
                 .Ctor<Assembly>()
-                .Is(executingAssembly);
+                .Is(migrationsAssembly);
         }
     }
 }
