@@ -35,6 +35,9 @@
                     case DataAccessType.PetaPoco:
                         ce.AddRegistry<PetaPocoRegistry>();
                         break;
+                    case DataAccessType.NHibernate:
+                        ce.AddRegistry<NHibernateRegistry>();
+                        break;
                     default:
                         throw new ArgumentException(string.Format("dataAccessType \"{0}\" is not available for use", dataAccessType), "dataAccessType");
                 }

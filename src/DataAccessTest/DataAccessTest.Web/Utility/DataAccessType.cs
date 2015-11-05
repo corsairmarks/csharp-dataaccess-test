@@ -8,7 +8,7 @@
     public enum DataAccessType
     {
         /// <summary>
-        /// Entity Framework ORM, from Microsoft
+        /// Entity Framework ORM from Microsoft
         /// </summary>
         EntityFramework = 1,
 
@@ -17,5 +17,11 @@
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Proper names.")]
         PetaPoco,
+
+        /// <summary>
+        /// NHibernate ORM, based Hibernate for Java
+        /// </summary>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Proper name.")]
+        NHibernate,
     }
 }

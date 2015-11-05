@@ -176,6 +176,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DependencyResolution\Registry\NHibernateRegistry.cs" />
     <Compile Include="DependencyResolution\Registry\PetaPocoRegistry.cs" />
     <Compile Include="DependencyResolution\Registry\SqlDatabaseRegistry.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
@@ -233,6 +234,10 @@
     <ProjectReference Include="..\DataAccessTest.Repository.EntityFramework\DataAccessTest.Repository.EntityFramework.csproj">
       <Project>{2e43ef7c-86d4-4899-93f3-0e978b2c760f}</Project>
       <Name>DataAccessTest.Repository.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessTest.Repository.NHibernate\DataAccessTest.Repository.NHibernate.csproj">
+      <Project>{6686cdf0-d24b-4015-a110-f1b720e07316}</Project>
+      <Name>DataAccessTest.Repository.NHibernate</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataAccessTest.Repository.PetaPoco\DataAccessTest.Repository.PetaPoco.csproj">
       <Project>{27420230-99fd-4140-857b-494e97c9b527}</Project>
