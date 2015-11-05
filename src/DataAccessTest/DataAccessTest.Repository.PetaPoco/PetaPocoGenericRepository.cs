@@ -73,7 +73,7 @@
         /// <returns>A query-able collection of entities.</returns>
         public virtual IQueryable<TEntity> GetAll()
         {
-            return this.Database.Query<TEntity>("WHERE 1 = 1").AsQueryable();
+            return this.Database.Query<TEntity>(string.Empty).AsQueryable();
         }
 
         /// <summary>
@@ -83,7 +83,8 @@
         /// <returns>The filtered entities.</returns>
         public virtual IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException("No translation from expressions (yet)");
+            // DANGER: This will select the whole table every time - real code should consider writing specialized query methods when using PetaPoco
+            return this.GetAll().Where(predicate);
         }
 
         #endregion
