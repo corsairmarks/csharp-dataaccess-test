@@ -8,9 +8,20 @@
     /// A generic POCO mapper designed to work only on a specific <typeparamref name="TEntity"/> class.
     /// </summary>
     /// <typeparam name="TEntity">The <see cref="Type"/> for which this <see cref="IMapper"/> can supply metadata and conversion functions.</typeparam>
-    public abstract class GenericExtensibleStandardMapper<TEntity> : ExtensibleStandardMapper
+    public abstract class GenericExtensibleSingleTypeMapper<TEntity> : ExtensibleStandardMapper, ISingleTypeMapper
         where TEntity : class
     {
+        /// <summary>
+        /// Gets the <see cref="Type"/> mapped by this <see cref="IMapper"/>.
+        /// </summary>
+        public Type MappedType
+        {
+            get
+            {
+                return typeof(TEntity);
+            }
+        }
+
         /// <summary>
         /// Constructs a <see cref="TableInfo"/> for a POCO by reading its attribute data.
         /// </summary>

@@ -53,7 +53,7 @@
         }
 
         /// <summary>
-        /// Configure a generic Entity Framework repository for type <typeparamref name="TModel"/> in the the <typeparamref name="TContext"/>.
+        /// Configure a generic Entity Framework repository for type <typeparamref name="TModel"/> in the <typeparamref name="TContext"/>.
         /// </summary>
         /// <typeparam name="TContext">The type of the Entity Framework context containing the data set.</typeparam>
         /// <typeparam name="TModel">The type of the repository model.</typeparam>

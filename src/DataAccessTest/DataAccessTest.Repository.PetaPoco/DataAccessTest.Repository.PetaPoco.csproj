@@ -43,11 +43,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mapping\ExtensibleStandardMapper.cs" />
-    <Compile Include="Mapping\GenericExtensibleStandardMapper.cs" />
+    <Compile Include="Mapping\GenericExtensibleSingleTypeMapper.cs" />
+    <Compile Include="Mapping\ISingleTypeMapper.cs" />
     <Compile Include="Mapping\ValueModelMapper.cs" />
     <Compile Include="Models\PetaPoco.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="PetaPocoDbInitializer.cs" />
     <Compile Include="PetaPocoGenericRepository.cs" />
     <Compile Include="PetaPocoUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,6 +65,10 @@
     <ProjectReference Include="..\DataAccessTest.Repository\DataAccessTest.Repository.csproj">
       <Project>{da77d930-c4ec-4236-a005-b799a215b83f}</Project>
       <Name>DataAccessTest.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessTest.Utility\DataAccessTest.Utility.csproj">
+      <Project>{f340a8a5-69e2-4e8c-83f9-52841104f95b}</Project>
+      <Name>DataAccessTest.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
