@@ -125,7 +125,7 @@ namespace PetaPoco
                 _factory = DbProviderFactories.GetFactory(_providerName);
 
             // Resolve the DB Type
-            string DBTypeName = (_factory == null ? _sharedConnection.GetType() : _factory.GetType()).Name;
+            string DBTypeName = (_factory == null ? _sharedConnection.GetType() : _factory.GetType()).FullName;
             _dbType = DatabaseType.Resolve(DBTypeName, _providerName);
 
             // What character is used for delimiting parameters in SQL
