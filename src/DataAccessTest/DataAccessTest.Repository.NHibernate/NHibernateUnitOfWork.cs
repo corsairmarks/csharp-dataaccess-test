@@ -1,15 +1,19 @@
-﻿namespace DataAccessTest.Repository.PetaPoco
+﻿namespace DataAccessTest.Repository.NHibernate
 {
     using System;
-    using global::PetaPoco;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using global::NHibernate;
 
     /// <summary>
-    /// A PetaPoco implementation of the Unit of Work pattern.
+    /// An NHibernate implementation of the Unit of Work pattern.
     /// </summary>
     /// <remarks>
     /// See the MSDN suggested implementation if <see cref="IDisposable"/>: <c>http://msdn.microsoft.com/en-us/library/system.idisposable.aspx</c>
     /// </remarks>
-    public class PetaPocoUnitOfWork : IUnitOfWork
+    public class NHibernateUnitOfWork : IUnitOfWork
     {
         #region Fields
 
@@ -23,14 +27,14 @@
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PetaPocoUnitOfWork"/> class.
+        /// Initializes a new instance of the <see cref="NHibernateUnitOfWork"/> class.
         /// </summary>
-        /// <param name="transaction">The PetaPoco transaction.</param>
-        public PetaPocoUnitOfWork(ITransaction transaction)
+        /// <param name="transaction">The NHibernate transaction.</param>
+        public NHibernateUnitOfWork(ITransaction transaction)
         {
             if (transaction == null)
             {
-                throw new ArgumentNullException("database");
+                throw new ArgumentNullException("transaction");
             }
 
             this.Transaction = transaction;
@@ -41,9 +45,9 @@
         #region Destructors
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="PetaPocoUnitOfWork"/> class.
+        /// Finalizes an instance of the <see cref="NHibernateUnitOfWork"/> class.
         /// </summary>
-        ~PetaPocoUnitOfWork()
+        ~NHibernateUnitOfWork()
         {
             this.Dispose(false);
         }
@@ -53,7 +57,7 @@
         #region Properties
 
         /// <summary>
-        /// Gets the PetaPoco transaction.
+        /// Gets the NHibernate transaction.
         /// </summary>
         protected ITransaction Transaction { get; private set; }
 
@@ -62,11 +66,11 @@
         #region IUnitOfWorkMembers
 
         /// <summary>
-        /// Mark the unit of work as complete, which commits all modifications to the data store using PetaPoco.
+        /// Mark the unit of work as complete, which commits all modifications to the data store using NHibernate.
         /// </summary>
         public void Complete()
         {
-            this.Transaction.Complete();
+            this.Transaction.Commit();
         }
 
         #region IDisposable Members

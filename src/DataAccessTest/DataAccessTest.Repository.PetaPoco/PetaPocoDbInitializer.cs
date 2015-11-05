@@ -6,7 +6,7 @@
     using global::PetaPoco;
 
     /// <summary>
-    /// Perform lifetime setup for Entity Framework data access.
+    /// Perform lifetime setup for PetaPoco data access.
     /// </summary>
     public class PetaPocoDbInitializer : IDataAccessInitializer
     {

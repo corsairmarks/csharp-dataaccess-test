@@ -8,11 +8,11 @@
         /// <summary>
         /// Gets or sets the value ID.
         /// </summary>
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the value description.
         /// </summary>
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
     }
 }
