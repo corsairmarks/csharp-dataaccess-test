@@ -22,7 +22,7 @@
         private readonly Func<IEnumerable<DbContext>> getDbContexts;
 
         /// <summary>
-        /// Whether the repositories have been initialized.
+        /// Whether the data access layer has been initialized.
         /// </summary>
         private bool isInitialized;
 
@@ -53,14 +53,14 @@
 
         #endregion
 
-        #region IRepositoryInitializer Members
+        #region IDataAccessInitializer Members
 
         /// <summary>
-        /// Perform any initialization required for the repositories.  This should be called
+        /// Perform any initialization required for the data access layer.  This should be called
         /// once when the application domain is being initialized.
         /// </summary>
         /// <exception cref="System.InvalidOperationException">
-        /// Thrown when this method is called and the repositories have already been initialized.
+        /// Thrown when this method is called and the data access layer has already been initialized.
         /// </exception>
         public void Initialize()
         {

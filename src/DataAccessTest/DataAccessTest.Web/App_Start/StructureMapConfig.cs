@@ -32,6 +32,9 @@
                     case DataAccessType.EntityFramework:
                         ce.AddRegistry<EntityFrameworkRegistry>();
                         break;
+                    case DataAccessType.PetaPoco:
+                        ce.AddRegistry<PetaPocoRegistry>();
+                        break;
                     default:
                         throw new ArgumentException(string.Format("dataAccessType \"{0}\" is not available for use", dataAccessType), "dataAccessType");
                 }
